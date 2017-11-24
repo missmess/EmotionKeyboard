@@ -26,8 +26,8 @@ android {
 dependencies {
 }
 
-def siteUrl = 'https://github.com/missmess/CoverFlowView'    // project homepage
-def gitUrl = 'https://github.com/missmess/CoverFlowView.git' // project git
+def siteUrl = 'https://github.com/missmess/EmotionKeyboard'    // project homepage
+def gitUrl = 'https://github.com/missmess/EmotionKeyboard.git' // project git
 
 install {
     repositories.mavenInstaller {
@@ -35,7 +35,7 @@ install {
         pom {
             project {
                 packaging 'aar'
-                name 'CoverFlowView For Android'   // name
+                name 'EmotionKeyboard For Android'   // name
                 url siteUrl
                 licenses {
                     license {
@@ -91,7 +91,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "coverflowview"                // project name in jcenter
+        name = "emotionkeyboard"                // project name in jcenter
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

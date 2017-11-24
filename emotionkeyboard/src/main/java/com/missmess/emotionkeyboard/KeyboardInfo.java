@@ -13,7 +13,7 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 /**
- * 获取键盘高度信息的类。
+ * 获取键盘高度和状态信息的类。
  *
  * @author wl
  * @since 2017/11/23 10:50

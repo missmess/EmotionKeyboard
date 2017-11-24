@@ -31,6 +31,12 @@ import java.util.ArrayList;
  *     度还是不正确（因为源码是只有在点击表情按钮收键盘才会记录键盘高度）</li>
  *     <li>...</li>
  * </ul>
+ * 做了一些优化：
+ * <ul>
+ * <li>开放了一些常用api</li>
+ * <li>使用Build模式来配置</li>
+ * <li>...</li>
+ * </ul>
  *
  * @author wl
  * @since 2017/11/23 10:29

@@ -30,10 +30,10 @@ public class BaseFunctionActivity extends AppCompatActivity {
         //判断绑定那种EditView
         emotionKeyboard = new EmotionKeyboard.Builder(this)
                 .contentLayout(ll_contentView)//绑定内容view
-                .editText(et_input)//判断绑定那种EditView
-                .addEmotionBtnAndLayout(btn_emoji, ll_bottom_layout)
-                .addEmotionBtnAndLayout(btn_more, ll_bottom_layout2)
-                .touchContentViewHideAllEnabled(null)
+                .editText(et_input)//绑定EditView
+                .addEmotionBtnAndLayout(btn_emoji, ll_bottom_layout)//添加第一个表情按钮布局
+                .addEmotionBtnAndLayout(btn_more, ll_bottom_layout2)//第二个
+                .touchContentViewHideAllEnabled(null)//是否在触摸内容view时获取焦点隐藏键盘
                 .keyboardStateCallback(new KeyboardInfo.OnSoftKeyboardChangeListener() {
                     @Override
                     public void onSoftKeyboardStateChanged(boolean shown, int height) {
