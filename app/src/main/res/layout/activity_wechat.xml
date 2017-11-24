@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WechatActivity">
+
+    <ScrollView
+        android:id="@+id/ll_contentView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#fefefe">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="顶部\n\n\n\n内容区域\n\n\n\n
+            内容区域\n\n\n\n内容区域\n\n\n\n内容区域\n\n\n\n
+            中间\n\n\n\n内容区域\n\n\n\n内容区域\n\n\n\n内容区域\n\n\n\n内容区域\n\n\n\n内容区域\n\n\n\n底部"/>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_func_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#f0f0f0"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/btn_voice"
+            android:layout_width="32dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="32dp"
+            android:src="@drawable/selector_voice"/>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/et_input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/v_press_voice"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_bg_reply_edittext"
+                android:gravity="center"
+                android:text="按住  说话"
+                android:visibility="gone"
+                android:textSize="17sp"
+                android:layout_height="36dp" />
+
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/btn_emoji"
+            android:layout_width="32dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="32dp"
+            android:src="@drawable/selector_emoji"/>
+
+        <FrameLayout
+            android:layout_width="42dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_height="32dp">
+
+            <ImageView
+                android:id="@+id/btn_more"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_plus"/>
+
+            <Button
+                android:id="@+id/btn_send"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#43A047"
+                android:visibility="gone"
+                android:text="发送"
+                android:textColor="@android:color/white"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ll_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="表情布局"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/ll_bottom_layout2"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="更多功能"
+        android:visibility="gone"/>
+
+</LinearLayout>

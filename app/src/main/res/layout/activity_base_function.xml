@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".BaseFunctionActivity">
+
+    <TextView
+        android:id="@+id/ll_contentView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="内容区域"/>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_func_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#f0f0f0"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/btn_emoji"
+            android:layout_width="35dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="35dp"
+            android:src="@drawable/selector_emoji"/>
+
+        <ImageView
+            android:id="@+id/btn_more"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_plus"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ll_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="表情布局"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/ll_bottom_layout2"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="更多功能"
+        android:visibility="gone"/>
+
+</LinearLayout>
