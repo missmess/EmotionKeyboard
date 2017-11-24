@@ -31,6 +31,7 @@
   GIF和图片预览：
 
   ![gif](https://raw.githubusercontent.com/missmess/EmotionKeyboard/master/raw/sample.gif)
+  ![gif](https://raw.githubusercontent.com/missmess/EmotionKeyboard/master/raw/sample2.gif)
 
 ---
 
