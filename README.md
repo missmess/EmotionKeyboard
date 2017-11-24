@@ -1,7 +1,7 @@
 # EmotionKeyboard
 
    类似微信聊天界面的表情窗口控制，窗口跟软键盘同高，无缝切换效果。
-   核心代码参考的是dss886的开源项目（https://github.com/dss886/Android-EmotionInputDetector）。不过增强了扩展性：
+   核心代码参考的是dss886的开源项目（ https://github.com/dss886/Android-EmotionInputDetector ）。不过增强了扩展性：
    <ul>
        <li>新增 KeyboardInfo 类，封装并能很方便获取软键盘相关信息和状态。</li>
        <li>可以添加多个表情布局并进行切换。</li>
@@ -31,6 +31,7 @@
   GIF和图片预览：
 
   ![gif](https://raw.githubusercontent.com/missmess/EmotionKeyboard/master/raw/sample.gif)
+  
   ![gif](https://raw.githubusercontent.com/missmess/EmotionKeyboard/master/raw/sample2.gif)
 
 ---
@@ -47,7 +48,7 @@
 
 ### 功能介绍
 
-##### KeyboardInfo
+#### KeyboardInfo
   
   KeyboardInfo可以用来监听键盘状态变化和获取键盘高度信息，并缓存。使用步骤：
   
@@ -82,7 +83,7 @@
   
   也可以通过调用getSoftKeyboardHeight()方法，只要打开过一次键盘之后这个方法就总能取到正确的键盘高度值。
   
-##### EmotionKeyboard
+#### EmotionKeyboard
 
   帮助协调聊天内容布局，聊天输入框，表情按钮和表情布局的控制类。这个类的作用有：
   
