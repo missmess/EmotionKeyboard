@@ -2,6 +2,7 @@ package com.missmess.emotionkeyboard;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,14 @@ import java.util.ArrayList;
  * 了，但是根布局高度不变，只不过显示在键盘下面了。所以解决了原先键盘和表情布局切换需要不停设置visibility
  * 导致的一些糟糕的体验和bug。
  *
+ * <p>
+ * <b>注意布局尽量不要使用fitSystemWindow属性，防止出错。</b>
+ *
  * @author wl
  * @since 2017/12/08 13:57
  */
 public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListener {
+    private final int mRootPaddingBottom;
     private Activity mActivity;
     private InputMethodManager mInputManager;//软键盘管理类
     private final KeyboardInfo mKeyboardInfo;
@@ -36,6 +41,7 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
     private final View mActivityRootView;
     private int mRootViewHeight;
     private View mStuffView;
+    private boolean mRootViewFitKeyboard;
 
     EmojiconKeyBoard(Activity activity) {
         mActivity = activity;
@@ -43,6 +49,10 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
         mKeyboardInfo = KeyboardInfo.from(activity);
         mEmotionLayouts = new ArrayList<>();
         mActivityRootView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mRootViewFitKeyboard = mActivityRootView.getFitsSystemWindows();
+        }
+        mRootPaddingBottom = mActivityRootView.getPaddingBottom();
 
         // 开始监听键盘变化
         mKeyboardInfo.startListening();
@@ -111,6 +121,11 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
                     ViewGroup.LayoutParams lps = mActivityRootView.getLayoutParams();
                     lps.height = mRootViewHeight;
                     mActivityRootView.setLayoutParams(lps);
+                }
+                // 防止fitSystemWindow属性对rootView的paddingBottom影响
+                if (mRootViewFitKeyboard) {
+                    mActivityRootView.setPadding(mActivityRootView.getPaddingLeft(), mActivityRootView.getPaddingTop()
+                            , mActivityRootView.getPaddingRight(), mRootPaddingBottom);
                 }
             }
         });
@@ -236,9 +251,13 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
             // 打开键盘时：如果有表情键盘显示，为了平滑过渡，不做隐藏处理；如果没有表情键盘显示，则
             // 显示第一个表情键盘作为位置填充
             if (showingEmotionIndex != -1) {
+                int oldIndex = showingEmotionIndex;
                 mStuffView = mEmotionLayouts.get(showingEmotionIndex);
                 // 为了平滑过渡，仅重置这个值
                 showingEmotionIndex = -1;
+                if (mEmotionLayoutListener != null) {
+                    mEmotionLayoutListener.onEmotionLayoutHide(oldIndex);
+                }
             } else {
                 // 显示第一个表情布局作为键盘高度位置的填充
                 int softKeyboardHeight = mKeyboardInfo.getSoftKeyboardHeight();

@@ -26,7 +26,7 @@
 在项目的build.gradle中添加该dependencies：
 
   `
-    compile 'com.missmess.emotionkeyboard:emotionkeyboard:1.1.0'
+    compile 'com.missmess.emotionkeyboard:emotionkeyboard:1.1.1'
   `
 
 ---
