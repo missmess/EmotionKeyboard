@@ -6,12 +6,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.missmess.emotionkeyboard.EmotionKeyboard;
+import com.missmess.emotionkeyboard.EmojiconKeyBoard;
 import com.missmess.emotionkeyboard.KeyboardInfo;
 
 public class BaseFunctionActivity extends AppCompatActivity {
 
-    private EmotionKeyboard emotionKeyboard;
+    private EmojiconKeyBoard emotionKeyboard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class BaseFunctionActivity extends AppCompatActivity {
 
         //绑定内容view
         //判断绑定那种EditView
-        emotionKeyboard = new EmotionKeyboard.Builder(this)
+        emotionKeyboard = new EmojiconKeyBoard.Builder(this)
                 .contentLayout(ll_contentView)//绑定内容view
                 .editText(et_input)//绑定EditView
                 .addEmotionBtnAndLayout(btn_emoji, ll_bottom_layout)//添加第一个表情按钮布局
@@ -44,7 +44,7 @@ public class BaseFunctionActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .emotionPanelStateCallback(new EmotionKeyboard.OnEmotionLayoutStateChangeListener() {
+                .emotionPanelStateCallback(new EmojiconKeyBoard.OnEmotionLayoutStateChangeListener() {
                     @Override
                     public void onEmotionLayoutShow(View newEmotionLayout, int newEmotionLayoutIndex, int oldEmotionLayoutIndex) {
                         Log.d("BaseFunctionActivity", "显示index=" + newEmotionLayoutIndex + "的布局，隐藏index=" + oldEmotionLayoutIndex + "的布局");

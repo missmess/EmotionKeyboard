@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
 
-import com.missmess.emotionkeyboard.EmotionKeyboard;
+import com.missmess.emotionkeyboard.EmojiconKeyBoard;
 import com.missmess.emotionkeyboard.KeyboardInfo;
 
 public class WechatActivity extends AppCompatActivity {
-    private EmotionKeyboard emotionKeyboard;
+    private EmojiconKeyBoard emotionKeyboard;
     private ScrollView ll_contentView;
     private EditText et_input;
     private View v_press_voice;
@@ -61,7 +61,7 @@ public class WechatActivity extends AppCompatActivity {
 
         //绑定内容view
         //判断绑定那种EditView
-        emotionKeyboard = new EmotionKeyboard.Builder(this)
+        emotionKeyboard = new EmojiconKeyBoard.Builder(this)
                 .contentLayout(ll_contentView)//绑定内容view
                 .editText(et_input)//判断绑定那种EditView
                 .addEmotionBtnAndLayout(btn_emoji, ll_bottom_layout)
@@ -75,7 +75,7 @@ public class WechatActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .emotionPanelStateCallback(new EmotionKeyboard.OnEmotionLayoutStateChangeListener() {
+                .emotionPanelStateCallback(new EmojiconKeyBoard.OnEmotionLayoutStateChangeListener() {
                     @Override
                     public void onEmotionLayoutShow(View newEmotionLayout, int newEmotionLayoutIndex, int oldEmotionLayoutIndex) {
                         scrollContentToBottom();

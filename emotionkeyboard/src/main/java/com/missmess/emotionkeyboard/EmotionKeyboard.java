@@ -41,7 +41,9 @@ import java.util.ArrayList;
  * @author wl
  * @since 2017/11/23 10:29
  * @see <a href ="https://github.com/dss886/Android-EmotionInputDetector">参考的是dss886的开源项目</a>
+ * @deprecated 使用EmojiconKeyBoard来代替本类
  */
+@Deprecated
 public class EmotionKeyboard implements KeyboardInfo.OnSoftKeyboardChangeListener {
     private Activity mActivity;
     private InputMethodManager mInputManager;//软键盘管理类
@@ -235,6 +237,7 @@ public class EmotionKeyboard implements KeyboardInfo.OnSoftKeyboardChangeListene
             mKeyboardListener.onSoftKeyboardStateChanged(shown, height);
     }
 
+    @Deprecated
     public static class Builder {
         private EmotionKeyboard impl;
 
@@ -481,11 +484,5 @@ public class EmotionKeyboard implements KeyboardInfo.OnSoftKeyboardChangeListene
          * @param oldEmotionLayoutIndex 隐藏的表情布局Index
          */
         void onEmotionLayoutHide(int oldEmotionLayoutIndex);
-    }
-
-    public interface onEmotionLayoutAndKeyboardStateChangeListener {
-        void onShowKeyboard(int height);
-        void onShowEmotionLayout(int index);
-        void onChangeEmotionLayout(int newIndex, int oldIndex);
     }
 }

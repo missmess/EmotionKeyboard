@@ -98,7 +98,7 @@
         android:id="@+id/ll_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:background="@android:color/white"
+        android:background="#aaa433"
         android:gravity="center"
         android:text="表情布局"
         android:visibility="gone"/>
@@ -107,7 +107,7 @@
         android:id="@+id/ll_bottom_layout2"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:background="@android:color/white"
+        android:background="#2364a4"
         android:gravity="center"
         android:text="更多功能"
         android:visibility="gone"/>
