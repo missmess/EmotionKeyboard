@@ -41,7 +41,7 @@
 在项目的build.gradle中添加该dependencies：
 
   `
-    compile 'com.missmess.emotionkeyboard:emotionkeyboard:1.0.0'
+    compile 'com.missmess.emotionkeyboard:emotionkeyboard:1.0.1'
   `
 
 ---

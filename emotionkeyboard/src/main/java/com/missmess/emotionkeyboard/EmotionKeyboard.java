@@ -42,7 +42,7 @@ import java.util.ArrayList;
  * @since 2017/11/23 10:29
  * @see <a href ="https://github.com/dss886/Android-EmotionInputDetector">参考的是dss886的开源项目</a>
  */
-public class EmotionKeyboard {
+public class EmotionKeyboard implements KeyboardInfo.OnSoftKeyboardChangeListener {
     private Activity mActivity;
     private InputMethodManager mInputManager;//软键盘管理类
     private final KeyboardInfo mKeyboardInfo;
@@ -54,6 +54,7 @@ public class EmotionKeyboard {
     private boolean mTouchContentHideAll = false;
     private TheContentViewToucher mContentToucher;
     private OnEmotionLayoutStateChangeListener mEmotionLayoutListener;
+    private KeyboardInfo.OnSoftKeyboardChangeListener mKeyboardListener;
 
     EmotionKeyboard(Activity activity) {
         mActivity = activity;
@@ -63,10 +64,11 @@ public class EmotionKeyboard {
 
         // 开始监听键盘变化
         mKeyboardInfo.startListening();
+        mKeyboardInfo.setOnKeyboardChangeListener(this);
     }
 
     private void setOnKeyboardChangeListener(KeyboardInfo.OnSoftKeyboardChangeListener listener) {
-        mKeyboardInfo.setOnKeyboardChangeListener(listener);
+        mKeyboardListener = listener;
     }
 
     private void setOnEmotionLayoutChangeListener(OnEmotionLayoutStateChangeListener listener) {
@@ -221,6 +223,16 @@ public class EmotionKeyboard {
      */
     public void hideSoftKeyboard() {
         mInputManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+    }
+
+    @Override
+    public void onSoftKeyboardStateChanged(boolean shown, int height) {
+        if (shown) {
+            // 确保键盘弹出时，一定隐藏了表情布局
+            hideEmotionLayout();
+        }
+        if (mKeyboardListener != null)
+            mKeyboardListener.onSoftKeyboardStateChanged(shown, height);
     }
 
     public static class Builder {
