@@ -2,7 +2,7 @@ package com.missmess.emotionkeyboard;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
+import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +20,15 @@ import java.util.ArrayList;
  * 导致的一些糟糕的体验和bug。
  *
  * <p>
- * <b>注意布局尽量不要使用fitSystemWindow属性，防止出错。</b>
+ * <b>注意如果你的activity根布局使用了fitSystemWindow
+ * 属性，请调用{@link Builder#rootView(ViewGroup)}方法重新指定一个作为root。不然会出很严重的
+ * 错误</b>
+ *
  *
  * @author wl
  * @since 2017/12/08 13:57
  */
 public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListener {
-    private final int mRootPaddingBottom;
     private Activity mActivity;
     private InputMethodManager mInputManager;//软键盘管理类
     private final KeyboardInfo mKeyboardInfo;
@@ -38,21 +40,17 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
     private TheContentViewToucher mContentToucher;
     private OnEmotionLayoutStateChangeListener mEmotionLayoutListener;
     private KeyboardInfo.OnSoftKeyboardChangeListener mKeyboardListener;
-    private final View mActivityRootView;
+    private View mActivityRootView;
     private int mRootViewHeight;
     private View mStuffView;
-    private boolean mRootViewFitKeyboard;
+    /** 键盘弹出收起时的过渡view引用 */
+    private View mTransitView;
 
     EmojiconKeyBoard(Activity activity) {
         mActivity = activity;
         mInputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         mKeyboardInfo = KeyboardInfo.from(activity);
         mEmotionLayouts = new ArrayList<>();
-        mActivityRootView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mRootViewFitKeyboard = mActivityRootView.getFitsSystemWindows();
-        }
-        mRootPaddingBottom = mActivityRootView.getPaddingBottom();
 
         // 开始监听键盘变化
         mKeyboardInfo.startListening();
@@ -82,17 +80,23 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
     }
 
     private void addEmotionBtnAndLayout(View emotionBtn, View emotionLayout, View.OnClickListener listener) {
-//        if (mStuffView == null) {
-//            mStuffView = new View(mActivity);
-//            mStuffView.setBackgroundColor(Color.TRANSPARENT);
-//            ViewGroup parent = (ViewGroup) emotionLayout.getParent();
-//            parent.addView(mStuffView, 1, 0);
-//            mStuffView.setVisibility(View.GONE);
-//        }
+        if (mStuffView == null) {
+            mStuffView = new View(mActivity);
+            // 颜色透明，实际显示时取决于parent的颜色
+            mStuffView.setBackgroundColor(Color.TRANSPARENT);
+            ViewGroup parent = (ViewGroup) emotionLayout.getParent();
+            parent.addView(mStuffView, ViewGroup.LayoutParams.MATCH_PARENT, 0);
+            mStuffView.setVisibility(View.GONE);
+        }
 
         mEmotionLayouts.add(emotionLayout);
         int index = mEmotionLayouts.size() - 1;
         emotionBtn.setOnClickListener(new TheEmotionClicker(index, listener));
+    }
+
+    private void setRootView(View rootView) {
+        rootView.setFitsSystemWindows(false);
+        mActivityRootView = rootView;
     }
 
     /**
@@ -110,6 +114,10 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
         //隐藏软键盘
         hideSoftKeyboard();
 
+        if (mActivityRootView == null) {
+            setRootView(((ViewGroup) mActivity.findViewById(android.R.id.content)).getChildAt(0));
+        }
+
         mActivityRootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -121,11 +129,6 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
                     ViewGroup.LayoutParams lps = mActivityRootView.getLayoutParams();
                     lps.height = mRootViewHeight;
                     mActivityRootView.setLayoutParams(lps);
-                }
-                // 防止fitSystemWindow属性对rootView的paddingBottom影响
-                if (mRootViewFitKeyboard) {
-                    mActivityRootView.setPadding(mActivityRootView.getPaddingLeft(), mActivityRootView.getPaddingTop()
-                            , mActivityRootView.getPaddingRight(), mRootPaddingBottom);
                 }
             }
         });
@@ -159,9 +162,9 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
      * @param index index
      */
     public void showEmotionLayout(int index) {
-        if (mStuffView != null) {
-            mStuffView.setVisibility(View.GONE);
-            mStuffView = null;
+        if (mTransitView != null) {
+            mTransitView.setVisibility(View.GONE);
+            mTransitView = null;
         }
         hideSoftKeyboard();
 
@@ -252,25 +255,25 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
             // 显示第一个表情键盘作为位置填充
             if (showingEmotionIndex != -1) {
                 int oldIndex = showingEmotionIndex;
-                mStuffView = mEmotionLayouts.get(showingEmotionIndex);
+                mTransitView = mEmotionLayouts.get(showingEmotionIndex);
                 // 为了平滑过渡，仅重置这个值
                 showingEmotionIndex = -1;
                 if (mEmotionLayoutListener != null) {
                     mEmotionLayoutListener.onEmotionLayoutHide(oldIndex);
                 }
             } else {
-                // 显示第一个表情布局作为键盘高度位置的填充
+                // 显示键盘高度位置的填充布局
                 int softKeyboardHeight = mKeyboardInfo.getSoftKeyboardHeight();
-                View stuff = mEmotionLayouts.get(0);
+                View stuff = mStuffView;
                 stuff.getLayoutParams().height = softKeyboardHeight;
                 stuff.setVisibility(View.VISIBLE);
-                mStuffView = stuff;
+                mTransitView = stuff;
             }
         } else {
             // 关闭键盘时，隐藏填充位置
-            if (mStuffView != null) {
-                mStuffView.setVisibility(View.GONE);
-                mStuffView = null;
+            if (mTransitView != null) {
+                mTransitView.setVisibility(View.GONE);
+                mTransitView = null;
             }
         }
 
@@ -373,6 +376,18 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
          */
         public Builder emotionPanelStateCallback(OnEmotionLayoutStateChangeListener listener) {
             impl.setOnEmotionLayoutChangeListener(listener);
+            return this;
+        }
+
+        /**
+         * 如果你的activity根布局使用了{@link View#setFitsSystemWindows(boolean)}属性（通常一些改
+         * 变状态栏颜色的工具类，会使用setFitsSystemWindows方法），使用这个方法指定你的根布局为另一
+         * 个没有fitsSystemWindows属性的ViewGroup。
+         * @param root 必须是聊天布局的parent ViewGroup
+         * @return link call
+         */
+        public Builder rootView(ViewGroup root) {
+            impl.setRootView(root);
             return this;
         }
 

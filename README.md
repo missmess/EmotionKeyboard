@@ -26,7 +26,7 @@
 在项目的build.gradle中添加该dependencies：
 
   `
-    compile 'com.missmess.emotionkeyboard:emotionkeyboard:1.1.1'
+    compile 'com.missmess.emotionkeyboard:emotionkeyboard:1.1.2'
   `
 
 ---
@@ -102,7 +102,10 @@
       }
   ```
   
-  <b>参考DEMO中的WechatActivity，可以完全的实现类似微信聊天界面的交互。</b>
+  参考DEMO中的WechatActivity，可以完全的实现类似微信聊天界面的交互。
+  
+  <b>你的主题和你的window属性很多情况下都会导致，键盘弹出和收起不平滑，即动画的背景不是我们的表情布局。
+  建议你使用全屏主题。如果使用透明状态栏主题，请自行设置fitSystemWindow为true，和clipToPadding为false。</b>
   
 #### EmojiconKeyBoard
 

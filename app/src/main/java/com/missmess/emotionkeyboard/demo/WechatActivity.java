@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
 
@@ -25,6 +26,8 @@ public class WechatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wechat);
+        // 自定义状态栏颜色
+        StatusBarUtils.setColor(this, 0xffff6633, 0);
 
         ll_contentView = (ScrollView) findViewById(R.id.ll_contentView);
         View ll_bottom_layout = findViewById(R.id.ll_bottom_layout);
@@ -49,13 +52,7 @@ public class WechatActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()) {
-                    btn_send.setVisibility(View.VISIBLE);
-                    btn_more.setVisibility(View.GONE);
-                } else {
-                    btn_send.setVisibility(View.GONE);
-                    btn_more.setVisibility(View.VISIBLE);
-                }
+                showSendBtn(!s.toString().isEmpty());
             }
         });
 
@@ -67,6 +64,8 @@ public class WechatActivity extends AppCompatActivity {
                 .addEmotionBtnAndLayout(btn_emoji, ll_bottom_layout)
                 .addEmotionBtnAndLayout(btn_more, ll_bottom_layout2)
                 .touchContentViewHideAllEnabled(null)
+                // 由于设置状态栏时，根布局设置了fitSystemWindow属性。重新指定新的root防止显示出错
+                .rootView((ViewGroup) findViewById(R.id.root))
                 .keyboardStateCallback(new KeyboardInfo.OnSoftKeyboardChangeListener() {
                     @Override
                     public void onSoftKeyboardStateChanged(boolean shown, int height) {
@@ -125,6 +124,7 @@ public class WechatActivity extends AppCompatActivity {
             v_press_voice.setVisibility(View.VISIBLE);
             et_input.setVisibility(View.GONE);
             emotionKeyboard.hideSoftKeyboard();
+            showSendBtn(false);
         } else {
             btn_voice.setActivated(false);
             v_press_voice.setVisibility(View.GONE);
@@ -134,6 +134,17 @@ public class WechatActivity extends AppCompatActivity {
             } else {
                 et_input.requestFocus();
             }
+            showSendBtn(!et_input.getText().toString().isEmpty());
+        }
+    }
+
+    private void showSendBtn(boolean show) {
+        if (show) {
+            btn_send.setVisibility(View.VISIBLE);
+            btn_more.setVisibility(View.GONE);
+        } else {
+            btn_send.setVisibility(View.GONE);
+            btn_more.setVisibility(View.VISIBLE);
         }
     }
 

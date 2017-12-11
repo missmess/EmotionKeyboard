@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".WechatActivity">
 
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
     <ScrollView
         android:id="@+id/ll_contentView"
         android:layout_width="match_parent"
@@ -111,5 +117,6 @@
         android:gravity="center"
         android:text="更多功能"
         android:visibility="gone"/>
+    </LinearLayout>
 
 </LinearLayout>
