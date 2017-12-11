@@ -20,9 +20,7 @@ import java.util.ArrayList;
  * 导致的一些糟糕的体验和bug。
  *
  * <p>
- * <b>注意如果你的activity根布局使用了fitSystemWindow
- * 属性，请调用{@link Builder#rootView(ViewGroup)}方法重新指定一个作为root。不然会出很严重的
- * 错误</b>
+ * <b>注意如果你的activity根布局使用了fitSystemWindow属性，为了正常显示表情键盘和键盘切换效果，框架会去除这个属性。请自行处理。</b>
  *
  *
  * @author wl
@@ -385,7 +383,10 @@ public class EmojiconKeyBoard implements KeyboardInfo.OnSoftKeyboardChangeListen
          * 个没有fitsSystemWindows属性的ViewGroup。
          * @param root 必须是聊天布局的parent ViewGroup
          * @return link call
+         * @deprecated 由于重新指定root，会导致高度设置不可控（比如root的parent是relative layout
+         * 时，就完全出错了）。导致了键盘显示错乱。所以不提倡使用。
          */
+        @Deprecated
         public Builder rootView(ViewGroup root) {
             impl.setRootView(root);
             return this;

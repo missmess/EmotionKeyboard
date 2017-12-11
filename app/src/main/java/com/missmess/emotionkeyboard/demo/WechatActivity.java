@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
 
@@ -64,8 +63,6 @@ public class WechatActivity extends AppCompatActivity {
                 .addEmotionBtnAndLayout(btn_emoji, ll_bottom_layout)
                 .addEmotionBtnAndLayout(btn_more, ll_bottom_layout2)
                 .touchContentViewHideAllEnabled(null)
-                // 由于设置状态栏时，根布局设置了fitSystemWindow属性。重新指定新的root防止显示出错
-                .rootView((ViewGroup) findViewById(R.id.root))
                 .keyboardStateCallback(new KeyboardInfo.OnSoftKeyboardChangeListener() {
                     @Override
                     public void onSoftKeyboardStateChanged(boolean shown, int height) {
@@ -102,6 +99,16 @@ public class WechatActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+
+        // 自己设置padding top值，这样才能显示正确。
+        findViewById(R.id.root).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                v.setPadding(0,
+                        StatusBarUtils.getStatusBarHeight(WechatActivity.this) + getSupportActionBar().getHeight(), 0, 0);
+                v.removeOnLayoutChangeListener(this);
+            }
+        });
 
         btn_voice.setOnClickListener(new View.OnClickListener() {
             @Override
